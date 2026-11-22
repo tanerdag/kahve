@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dünya Kahve Çekirdekleri Rehberi</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#3b2417">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#f3e9d6;--card:#fbf5e8;--ink:#3b2417;--mute:#7a6452;--line:#c9b48f;--empty:#e2d6bf;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#241811;--card:#2f2018;--ink:#f1e4cf;--mute:#b9a48c;--line:#5a4332;--empty:#463427}}
+:root[data-theme="dark"]{--bg:#241811;--card:#2f2018;--ink:#f1e4cf;--mute:#b9a48c;--line:#5a4332;--empty:#463427}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.45}
+main{max-width:520px;margin:0 auto;padding:20px 14px 32px}
+h1{font-size:26px;line-height:1.15;text-align:center;margin:8px 0 6px;letter-spacing:.2px}
+.sub{text-align:center;color:var(--mute);font-size:14px;margin:0 0 16px;font-style:italic}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:16px;font-size:14px}
+.legend b{font-family:system-ui,sans-serif}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.flag{font-size:30px;line-height:1}
+.name{font-size:20px;font-weight:700}
+.row{display:grid;grid-template-columns:78px 1fr 34px;align-items:center;gap:8px;margin:5px 0;font-family:system-ui,sans-serif;font-size:13px;font-weight:600}
+.bar{display:flex;gap:4px}
+.seg{flex:1;height:14px;border-radius:5px;background:var(--empty)}
+.val{text-align:right;color:var(--mute);font-variant-numeric:tabular-nums}
+.notes{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px;text-align:center}
+h2{font-size:22px;text-align:center;margin:28px 0 12px}
+.info{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;font-size:15px}
+.info h3{margin:0 0 8px;font-size:17px}
+.info p{margin:4px 0}
+.beans{display:flex;gap:8px;margin:8px 0}
+.bean{width:26px;height:36px;border-radius:50%;position:relative}
+.bean:after{content:"";position:absolute;left:50%;top:6px;bottom:6px;width:2px;background:rgba(0,0,0,.35);transform:translateX(-50%) rotate(8deg)}
+.rk{display:grid;grid-template-columns:140px 1fr 34px;align-items:center;gap:8px;margin:6px 0;font-family:system-ui,sans-serif;font-size:13px;font-weight:600}
+.rk .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.info h3 .dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px;vertical-align:-1px}
+.flag svg{width:40px;height:27px;border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.25);display:block}
+.rk .n svg{width:22px;height:15px;vertical-align:-3px;margin-right:6px;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.cmp{margin-top:10px}
+.cmp .t{font-family:system-ui,sans-serif;font-size:13px;font-weight:700;margin-top:6px}
+</style>
+</head>
+<body>
+<main>
+<h1>Dünya Kahve Çekirdekleri Rehberi</h1>
+<p class="sub">Puanlar 1-5 arası genel eğilimdir; bölgeye ve işlemeye göre değişir.</p>
+<div class="legend">
+<span><b style="color:#7a58ad">Koku:</b> aroma yoğunluğu</span>
+<span><b style="color:#3f8a32">Ekşilik:</b> parlaklık, asidite</span>
+<span><b style="color:#c9631a">Tatlılık:</b> doğal tatlılık</span>
+<span><b style="color:#b02a35">Gövde:</b> ağızdaki ağırlık</span>
+<span style="grid-column:1/-1;color:var(--mute)">Koyu ton = yüksek puan</span>
+</div>
+<div id="cards"></div>
+<h2>Kahve Bilgi Notları</h2>
+<div class="info">
+<h3>Kahve türü: Arabika ve Robusta</h3>
+<p><b>Arabika:</b> karmaşık aroma, tatlımsı, asiditeli, düşük kafein (yaklaşık %1,2), daha hafif gövde.</p>
+<p><b>Robusta:</b> sert, acı, yüksek kafein (yaklaşık %2,2), güçlü gövde, yoğun krema.</p>
+<div class="cmp" id="cmp"></div>
+</div>
+<div class="info">
+<h3>Kavurma derecesi</h3>
+<div class="beans"><span class="bean" style="background:#c8964f"></span><span class="bean" style="background:#8a5a2b"></span><span class="bean" style="background:#3a2214"></span></div>
+<p><b>Açık:</b> belirgin aroma ve asidite, hafif gövde, çekirdeğin menşe karakteri öne çıkar.</p>
+<p><b>Orta:</b> dengeli, tatlılık ve asidite dengede.</p>
+<p><b>Koyu:</b> yoğun, acımsı, dumanlı, karamelize; asidite düşük, menşe karakteri azalır.</p>
+<p style="color:var(--mute)">Ağırlıkça kafein miktarı kavurmayla pratikte değişmez.</p>
+</div>
+<div class="info">
+<h3>İşleme yöntemleri</h3>
+<p><b>Yıkamalı:</b> temiz, parlak asidite, berrak aroma.</p>
+<p><b>Doğal (kuru):</b> meyve kabuğuyla kurutulur; meyvemsi, tatlı, dolgun gövde.</p>
+<p><b>Bal (honey):</b> yapışkan meyve dokusu bırakılarak kurutulur; tatlı, dengeli asidite, orta gövde.</p>
+</div>
+<div class="info">
+<h3>Kısa ipuçları</h3>
+<p>Taze çekilmiş kahve kullan.</p>
+<p>Çekirdeği hava, nem ve ışıktan koru.</p>
+<p>Kavurma tarihine bak.</p>
+</div>
+<h2>Düşükten Yükseğe Sıralamalar</h2>
+<p class="sub">Aynı puandakiler alfabetik sırayla gelir.</p>
+<div id="ranks"></div>
+</main>
+<script>
+const C={
+koku:["#d9cdee","#bba6dd","#9a7fc7","#7a58ad","#583486"],
+eks:["#d4ecb0","#a9d57f","#7dba58","#4f9a3a","#2f6f26"],
+tat:["#fbd9bd","#f6b988","#ee9650","#e07424","#b9560f"],
+gov:["#f4b6b6","#ec8585","#d94a4a","#b02a35","#7d1426"],
+br:["#e3c9a4","#d2ab78","#bd8a4f","#9a6a35","#6e4523"]};
+const L=[["Koku","koku"],["Ekşilik","eks"],["Tatlılık","tat"],["Gövde","gov"]];
+const D=[
+["Brezilya","🇧🇷",3,2,4,4,"Çikolata, Fındık, Dengeli"],
+["Kolombiya","🇨🇴",4,4,4,3,"Karamel, Kırmızı Meyve, Dengeli Asidite"],
+["Etiyopya","🇪🇹",5,4,3,2,"Yasemin, Bergamot, Çiçeksi"],
+["Guatemala","🇬🇹",4,4,3,4,"Kakao, Baharat, Tatlı"],
+["Kenya","🇰🇪",5,5,3,4,"Frenk Üzümü, Narenciye, Yoğun"],
+["Honduras","🇭🇳",3,3,4,3,"Karamel, Kırmızı Elma, Dengeli"],
+["Kosta Rika","🇨🇷",4,4,4,3,"Bal, Greyfurt, Canlı Asidite"],
+["Endonezya","🇮🇩",3,2,3,5,"Toprak, Baharat, Odunsu"],
+["Vietnam","🇻🇳",2,2,2,4,"Kakao, Odunsu, Acımsı (çoğunlukla Robusta)"],
+["Peru","🇵🇪",3,3,4,3,"Çikolata, Kuru Meyve, Dengeli"],
+["Hindistan","🇮🇳",3,2,3,4,"Baharat, Çikolata, Odunsu"],
+["El Salvador","🇸🇻",3,3,4,3,"Çikolata, Şeker Kamışı, Yumuşak"],
+["Panama","🇵🇦",5,4,3,2,"Yasemin, Tropik Meyve, Egzotik (Geisha çeşidi)"],
+["Uganda","🇺🇬",3,3,3,4,"Koyu Meyve, Çikolata, Dolgun Gövde"],
+["Tanzanya","🇹🇿",4,4,3,3,"Limon, Siyah Çay, Canlı Asidite"],
+["Nikaragua","🇳🇮",3,3,4,3,"Çikolata, Fındık, Yumuşak Meyve"],
+["Meksika","🇲🇽",3,3,3,2,"Fındık, Kakao, Hafif"],
+["Ruanda","🇷🇼",4,4,3,3,"Kırmızı Meyve, Siyah Çay, Çiçeksi"],
+["Burundi","🇧🇮",4,4,3,3,"Kırmızı Meyve, Narenciye, Çiçeksi"],
+["Yemen","🇾🇪",4,3,3,4,"Kuru Meyve, Baharat, Şarapsı"]];
+const st=(cx,cy,r)=>{const p=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,q=i%2?r*.4:r;p.push((cx+q*Math.cos(a)).toFixed(2)+','+(cy+q*Math.sin(a)).toFixed(2))}return p.join(' ')};
+const R_=(x,y,w,h,c)=>`<rect x='${x}' y='${y}' width='${w}' height='${h}' fill='${c}'/>`;
+const hs=a=>{let y=0;return a.map(([c,h])=>{const r=R_(0,y,30,h,c);y+=h;return r}).join('')};
+const vs=a=>{let x=0;return a.map(([c,w])=>{const r=R_(x,0,w,20,c);x+=w;return r}).join('')};
+const ci=(x,y,r,c,s)=>`<circle cx='${x}' cy='${y}' r='${r}' fill='${c}'${s?` stroke='${s}' stroke-width='.6'`:''}/>`;
+const sp=(x,y,r,c)=>`<polygon points='${st(x,y,r)}' fill='${c}'/>`;
+const pg=(p,c)=>`<polygon points='${p}' fill='${c}'/>`;
+const FL={
+'Brezilya':R_(0,0,30,20,'#009c3b')+pg('15,2.2 27.3,10 15,17.8 2.7,10','#ffdf00')+ci(15,10,4.2,'#002776'),
+'Burundi':R_(0,0,30,20,'#fff')+pg('0,0 30,0 15,10','#ce1126')+pg('0,20 30,20 15,10','#ce1126')+pg('0,0 0,20 15,10','#1eb53a')+pg('30,0 30,20 15,10','#1eb53a')+`<path d='M0 0L30 20M30 0L0 20' stroke='#fff' stroke-width='2.4'/>`+ci(15,10,4.6,'#fff'),
+'El Salvador':hs([['#0f47af',6.67],['#fff',6.66],['#0f47af',6.67]])+ci(15,10,2.3,'#e8d38a','#6a8a3a'),
+'Endonezya':hs([['#e70011',10],['#fff',10]]),
+'Etiyopya':hs([['#078930',6.67],['#fcdd09',6.66],['#da121a',6.67]])+ci(15,10,4.6,'#0f47af')+sp(15,10,3,'#fcdd09'),
+'Guatemala':vs([['#4997d0',10],['#fff',10],['#4997d0',10]])+ci(15,10,2.2,'#7aa05a','#5a7a3a'),
+'Hindistan':hs([['#ff9933',6.67],['#fff',6.66],['#138808',6.67]])+ci(15,10,2.6,'none','#000080'),
+'Honduras':hs([['#0073cf',6.67],['#fff',6.66],['#0073cf',6.67]])+[[15,10],[12.5,8.6],[12.5,11.4],[17.5,8.6],[17.5,11.4]].map(p=>sp(p[0],p[1],1.2,'#0073cf')).join(''),
+'Kenya':hs([['#000',5],['#fff',1],['#bb0000',8],['#fff',1],['#006600',5]])+`<ellipse cx='15' cy='10' rx='2.6' ry='5.6' fill='#bb0000' stroke='#000' stroke-width='.7'/>`,
+'Kolombiya':hs([['#fcd116',10],['#003893',5],['#ce1126',5]]),
+'Kosta Rika':hs([['#002b7f',3.33],['#fff',3.33],['#ce1126',6.68],['#fff',3.33],['#002b7f',3.33]]),
+'Meksika':vs([['#006847',10],['#fff',10],['#ce1126',10]])+ci(15,10,2.2,'#a97c50'),
+'Nikaragua':hs([['#0067c6',6.67],['#fff',6.66],['#0067c6',6.67]])+pg('15,7.2 17.6,12.2 12.4,12.2','#e8d38a'),
+'Panama':R_(0,0,30,20,'#fff')+R_(15,0,15,10,'#d21034')+R_(0,10,15,10,'#005293')+sp(7.5,5,3,'#005293')+sp(22.5,15,3,'#d21034'),
+'Peru':vs([['#d91023',7.5],['#fff',15],['#d91023',7.5]]),
+'Ruanda':hs([['#00a1de',10],['#fad201',5],['#20603d',5]])+ci(24,5,2.3,'#e5be01'),
+'Tanzanya':R_(0,0,30,20,'#1eb53a')+pg('30,0 30,20 0,20','#00a3dd')+`<path d='M-1 21L31 -1' stroke='#fcd116' stroke-width='7'/><path d='M-1 21L31 -1' stroke='#000' stroke-width='5'/>`,
+'Uganda':hs([['#000',3.33],['#fcdc04',3.33],['#d90000',3.34],['#000',3.33],['#fcdc04',3.33],['#d90000',3.34]])+ci(15,10,3.6,'#fff'),
+'Vietnam':R_(0,0,30,20,'#da251d')+sp(15,10.5,5.5,'#ff0'),
+'Yemen':hs([['#ce1126',6.67],['#fff',6.66],['#000',6.67]])
+};
+function flag(n){return `<svg viewBox='0 0 30 20' role='img' aria-label='${n} bayrağı'>${FL[n]}</svg>`}
+D.sort((a,b)=>a[0].localeCompare(b[0],"tr"));
+function bar(s,pal){let h='<div class="bar">';for(let i=0;i<5;i++)h+='<span class="seg"'+(i<s?' style="background:'+pal[i]+'"':'')+'></span>';return h+'</div>'}
+document.getElementById("cards").innerHTML=D.map(d=>{
+let r=L.map((l,i)=>'<div class="row"><span>'+l[0]+'</span>'+bar(d[2+i],C[l[1]])+'<span class="val">'+d[2+i]+'/5</span></div>').join("");
+return '<div class="card"><div class="head"><span class="flag">'+flag(d[0])+'</span><span class="name">'+d[0]+'</span></div>'+r+'<div class="notes">'+d[6]+'</div></div>'}).join("");
+const cm=[["Kafein",[["Arabika",2],["Robusta",4]]],["Tat karmaşıklığı",[["Arabika",4],["Robusta",2]]]];
+document.getElementById("cmp").innerHTML=cm.map(c=>'<div class="t">'+c[0]+'</div>'+c[1].map(x=>'<div class="row"><span>'+x[0]+'</span>'+bar(x[1],C.br)+'<span class="val">'+x[1]+'/5</span></div>').join("")).join("");
+const R=[["Ekşilik","eks",3],["Tatlılık","tat",4],["Gövde","gov",5]];
+document.getElementById("ranks").innerHTML=R.map(g=>{
+const s=D.map(d=>[d[0],d[1],d[g[2]]]).sort((a,b)=>a[2]-b[2]);
+const pal=C[g[1]];
+return '<div class="info"><h3><span class="dot" style="background:'+pal[3]+'"></span>'+g[0]+' (düşükten yükseğe)</h3>'+s.map(x=>'<div class="rk"><span class="n">'+flag(x[0])+x[0]+'</span>'+bar(x[2],pal)+'<span class="val">'+x[2]+'/5</span></div>').join("")+'</div>'}).join("");
+</script>
+<script>if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){navigator.serviceWorker.register('sw.js').catch(function(){})}</script>
+</body>
+</html>
