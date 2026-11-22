@@ -87,6 +87,7 @@ h2{font-size:22px;text-align:center;margin:28px 0 12px}
 <h2>Düşükten Yükseğe Sıralamalar</h2>
 <p class="sub">Aynı puandakiler alfabetik sırayla gelir.</p>
 <div id="ranks"></div>
+<p class="sub" style="margin-top:24px">Sürüm 3 · otomatik yenileme</p>
 </main>
 <script>
 const C={
@@ -161,5 +162,21 @@ const pal=C[g[1]];
 return '<div class="info"><h3><span class="dot" style="background:'+pal[3]+'"></span>'+g[0]+' (düşükten yükseğe)</h3>'+s.map(x=>'<div class="rk"><span class="n">'+flag(x[0])+x[0]+'</span>'+bar(x[2],pal)+'<span class="val">'+x[2]+'/5</span></div>').join("")+'</div>'}).join("");
 </script>
 <script>if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){navigator.serviceWorker.register('sw.js').catch(function(){})}</script>
+<script>
+// Uygulama arka plandan geri dönünce yeni sürüm var mı diye bakar; varsa sayfayı yeniler.
+if(location.protocol.indexOf('http')===0){
+  var base=null;
+  var chk=function(){
+    fetch('index.html',{cache:'no-store'}).then(function(r){
+      var t=r.headers.get('etag')||r.headers.get('last-modified');
+      if(!t)return;
+      if(base===null)base=t; else if(t!==base)location.reload();
+    }).catch(function(){});
+  };
+  chk();
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')chk()});
+  window.addEventListener('pageshow',function(e){if(e.persisted)chk()});
+}
+</script>
 </body>
 </html>
